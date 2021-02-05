@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo "Which site to you want to block??"
+
+read name
+filename='/etc/hosts'
+n=1
+found="false"
+while read line; do
+    echo $line
+    if [[ $line == *"$name"* ]]; then
+        found="true"
+        echo 'Already Blocked, Do you want to unblock?'
+        read answer </dev/tty
+        if [ $answer="yes" ] || [ $answer="Yes" ]; then
+            search_file="127.0.0.1 www.$name.com"
+            sudo sed -i "s/$search_file/ /gi" "/etc/hosts"
+            echo "unblocked"
+            break
+        fi
+    fi
+n=$((n+1))
+
+done < $filename
+if [ "$found" != "true" ]; then
+    echo "127.0.0.1 www.$name.com" | sudo tee -a /etc/hosts > /dev/null
+    echo "Blocked the domain"
+fi
