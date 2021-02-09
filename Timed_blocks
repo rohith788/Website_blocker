@@ -7,7 +7,6 @@ filename='/etc/hosts'
 n=1
 found="false"
 while read line; do
-    echo $line
     if [[ $line == *"$name"* ]]; then
         found="true"
         echo 'Already Blocked, Do you want to unblock?'
